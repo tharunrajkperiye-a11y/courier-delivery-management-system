@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - CourierFlow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Dashboard</h1>
+
+    <p>
+        Overview of your courier operations
+    </p>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+<div class="stats">
+
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-title">
+                Total Customers
+            </div>
+
+            <div class="stat-icon">
+                👤
+            </div>
+
+        </div>
+
+        <div class="stat-number">
+            {{ customers }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-title">
+                Employees
+            </div>
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+        </div>
+
+        <div class="stat-number">
+            {{ employees }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-title">
+                Total Parcels
+            </div>
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+        </div>
+
+        <div class="stat-number">
+            {{ parcels }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-title">
+                Delivered
+            </div>
+
+            <div class="stat-icon">
+                ✓
+            </div>
+
+        </div>
+
+        <div class="stat-number">
+            {{ delivered }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-top">
+
+            <div class="stat-title">
+                In Transit
+            </div>
+
+            <div class="stat-icon">
+                →
+            </div>
+
+        </div>
+
+        <div class="stat-number">
+            {{ in_transit }}
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="section-title">
+    Quick Actions
+</div>
+
+
+<div class="actions">
+
+
+    <a href="/add-customer" class="action-card">
+
+        <div class="action-icon">
+            +
+        </div>
+
+        <h3>Add Customer</h3>
+
+        <p>
+            Register a new customer
+        </p>
+
+    </a>
+
+
+    <a href="/add-employee" class="action-card">
+
+        <div class="action-icon">
+            +
+        </div>
+
+        <h3>Add Employee</h3>
+
+        <p>
+            Add courier staff
+        </p>
+
+    </a>
+
+
+    <a href="/book-parcel" class="action-card">
+
+        <div class="action-icon">
+            📦
+        </div>
+
+        <h3>Book Parcel</h3>
+
+        <p>
+            Create a new shipment
+        </p>
+
+    </a>
+
+
+    <a href="/update-status" class="action-card">
+
+        <div class="action-icon">
+            →
+        </div>
+
+        <h3>Update Status</h3>
+
+        <p>
+            Update shipment progress
+        </p>
+
+    </a>
+
+
+    <a href="/parcels" class="action-card">
+
+        <div class="action-icon">
+            ☷
+        </div>
+
+        <h3>View Parcels</h3>
+
+        <p>
+            Browse shipment records
+        </p>
+
+    </a>
+
+
+    <a href="/logs" class="action-card">
+
+        <div class="action-icon">
+            ≡
+        </div>
+
+        <h3>Delivery Logs</h3>
+
+        <p>
+            View delivery history
+        </p>
+
+    </a>
+
+
+    <a href="/payment" class="action-card">
+
+        <div class="action-icon">
+            ₹
+        </div>
+
+        <h3>Payments</h3>
+
+        <p>
+            Manage parcel payments
+        </p>
+
+    </a>
+
+
+</div>
+
+
+{% endblock %}

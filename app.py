@@ -7,7 +7,35 @@ app.secret_key = "courier-secret-key"
 
 DATABASE = "courier.db"
 
+from flask import Flask, render_template, request, redirect, flash
+import sqlite3
+from datetime import date
 
+app = Flask(__name__)
+app.secret_key = "courier-secret-key"
+
+DATABASE = "courier.db"
+
+
+def init_db():
+
+    connection = sqlite3.connect(DATABASE)
+
+    connection.execute("PRAGMA foreign_keys = ON")
+
+    with open("schema.sql", "r") as file:
+        schema = file.read()
+
+    connection.executescript(schema)
+
+    connection.close()
+
+
+def get_db():
+    connection = sqlite3.connect(DATABASE)
+    connection.row_factory = sqlite3.Row
+    connection.execute("PRAGMA foreign_keys = ON")
+    return connection
 def get_db():
     connection = sqlite3.connect(DATABASE)
     connection.row_factory = sqlite3.Row

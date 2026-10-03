@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CourierFlow{% endblock %}</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 68px;
+            background: #0f172a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+
+            background: #22c55e;
+            color: white;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: 92%;
+            max-width: 1250px;
+
+            margin: 30px auto;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            margin-top: 6px;
+            color: #64748b;
+        }
+
+        /* ================= FLASH MESSAGE ================= */
+
+        .flash {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+
+            color: #166534;
+
+            padding: 12px 15px;
+
+            border-radius: 7px;
+
+            margin-bottom: 20px;
+        }
+
+        /* ================= DASHBOARD CARDS ================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 2px 6px rgba(15,23,42,0.04);
+        }
+
+        .stat-top {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-title {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 600;
+
+            margin-top: 12px;
+
+            color: #0f172a;
+        }
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 14px;
+            color: #0f172a;
+        }
+
+        .actions {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .action-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            text-decoration: none;
+
+            color: #1e293b;
+
+            transition: 0.15s;
+        }
+
+        .action-card:hover {
+            border-color: #93c5fd;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 15px rgba(15,23,42,0.07);
+        }
+
+        .action-card h3 {
+            margin: 10px 0 5px;
+
+            font-size: 16px;
+        }
+
+        .action-card p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        .action-icon {
+            width: 38px;
+            height: 38px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 28px;
+
+            max-width: 650px;
+
+            box-shadow:
+                0 2px 6px rgba(15,23,42,0.04);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            margin-bottom: 7px;
+
+            color: #334155;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            background: white;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #60a5fa;
+
+            box-shadow:
+                0 0 0 2px #dbeafe;
+        }
+
+        textarea {
+            min-height: 90px;
+
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+
+            margin-left: 7px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            overflow-x: auto;
+
+            box-shadow:
+                0 2px 6px rgba(15,23,42,0.04);
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+
+            color: #475569;
+
+            font-weight: 600;
+
+            text-align: left;
+
+            padding: 13px 15px;
+
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 13px 15px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            color: #475569;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 500;
+        }
+
+        .status-booked {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .status-transit {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .status-delivered {
+            background: #ecfdf5;
+            color: #15803d;
+        }
+
+        .status-cancelled {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width: 900px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .page {
+                width: 94%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <a href="/" style="text-decoration:none;color:white;">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                CF
+            </div>
+
+            CourierFlow
+
+        </div>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">Dashboard</a>
+
+        <a href="/parcels">Parcels</a>
+
+        <a href="/logs">Delivery Logs</a>
+
+        <a href="/payment">Payments</a>
+
+    </div>
+
+</nav>
+
+
+<main class="page">
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+<footer>
+
+    CourierFlow &nbsp; • &nbsp;
+    Courier Delivery Management System
+
+</footer>
+
+
+</body>
+
+</html>

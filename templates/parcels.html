@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}
+Parcels - CourierFlow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Parcel Management</h1>
+
+    <p>
+        View and track all courier shipments
+    </p>
+
+</div>
+
+
+<div class="table-card">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Tracking No.</th>
+
+                <th>Sender</th>
+
+                <th>Receiver</th>
+
+                <th>Destination</th>
+
+                <th>Weight</th>
+
+                <th>Booking Date</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        {% for parcel in parcels %}
+
+            <tr>
+
+                <td>
+                    <strong>
+                        {{ parcel.tracking_number }}
+                    </strong>
+                </td>
+
+                <td>
+                    {{ parcel.sender_name }}
+                </td>
+
+                <td>
+                    {{ parcel.receiver_name }}
+                </td>
+
+                <td>
+                    {{ parcel.destination }}
+                </td>
+
+                <td>
+                    {{ parcel.weight }} kg
+                </td>
+
+                <td>
+                    {{ parcel.booking_date }}
+                </td>
+
+                <td>
+
+                    {% if parcel.delivery_status == "Delivered" %}
+
+                        <span class="status status-delivered">
+                            Delivered
+                        </span>
+
+                    {% elif parcel.delivery_status == "In Transit" %}
+
+                        <span class="status status-transit">
+                            In Transit
+                        </span>
+
+                    {% elif parcel.delivery_status == "Cancelled" %}
+
+                        <span class="status status-cancelled">
+                            Cancelled
+                        </span>
+
+                    {% else %}
+
+                        <span class="status status-booked">
+                            {{ parcel.delivery_status }}
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="7" style="text-align:center;padding:30px;">
+
+                    No parcels found.
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+{% endblock %}

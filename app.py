@@ -537,6 +537,108 @@ def logs():
     return render_template("logs.html", logs=rows)
 
 
+
+# ---------------- DELETE RECORDS (ADMIN ONLY) ----------------
+
+@app.route("/delete/customer/<int:record_id>", methods=["POST"])
+@admin_required
+def delete_customer(record_id):
+    db = get_db()
+    try:
+        db.execute("DELETE FROM customer WHERE customer_id = ?", (record_id,))
+        if db.total_changes == 0:
+            flash("Customer record was not found.")
+        else:
+            db.commit()
+            flash("Customer deleted successfully.")
+    except sqlite3.IntegrityError:
+        db.rollback()
+        flash("Cannot delete this customer because parcels are linked to this customer.")
+    finally:
+        db.close()
+    return redirect(url_for("home"))
+
+
+@app.route("/delete/employee/<int:record_id>", methods=["POST"])
+@admin_required
+def delete_employee(record_id):
+    db = get_db()
+    try:
+        db.execute("DELETE FROM employee WHERE employee_id = ?", (record_id,))
+        if db.total_changes == 0:
+            flash("Employee record was not found.")
+        else:
+            db.commit()
+            flash("Employee deleted successfully.")
+    except sqlite3.IntegrityError:
+        db.rollback()
+        flash("Cannot delete this employee because delivery logs are linked to this employee.")
+    finally:
+        db.close()
+    return redirect(url_for("home"))
+
+
+@app.route("/delete/parcel/<int:record_id>", methods=["POST"])
+@admin_required
+def delete_parcel(record_id):
+    db = get_db()
+    try:
+        # Remove dependent records first to respect foreign-key constraints.
+        db.execute("DELETE FROM delivery_log WHERE parcel_id = ?", (record_id,))
+        db.execute("DELETE FROM payment WHERE parcel_id = ?", (record_id,))
+        cursor = db.execute("DELETE FROM parcel WHERE parcel_id = ?", (record_id,))
+        if cursor.rowcount == 0:
+            db.rollback()
+            flash("Parcel record was not found.")
+        else:
+            db.commit()
+            flash("Parcel and its related payment/delivery-log records deleted successfully.")
+    except sqlite3.Error:
+        db.rollback()
+        flash("Could not delete this parcel.")
+    finally:
+        db.close()
+    return redirect(request.referrer or url_for("home"))
+
+
+@app.route("/delete/payment/<int:record_id>", methods=["POST"])
+@admin_required
+def delete_payment(record_id):
+    db = get_db()
+    try:
+        cursor = db.execute("DELETE FROM payment WHERE payment_id = ?", (record_id,))
+        if cursor.rowcount == 0:
+            flash("Payment record was not found.")
+        else:
+            db.commit()
+            flash("Payment deleted successfully.")
+    except sqlite3.Error:
+        db.rollback()
+        flash("Could not delete this payment.")
+    finally:
+        db.close()
+    return redirect(url_for("home"))
+
+
+@app.route("/delete/log/<int:record_id>", methods=["POST"])
+@admin_required
+def delete_log(record_id):
+    db = get_db()
+    try:
+        cursor = db.execute("DELETE FROM delivery_log WHERE log_id = ?", (record_id,))
+        if cursor.rowcount == 0:
+            flash("Delivery log was not found.")
+        else:
+            db.commit()
+            flash("Delivery log deleted successfully.")
+    except sqlite3.Error:
+        db.rollback()
+        flash("Could not delete this delivery log.")
+    finally:
+        db.close()
+    return redirect(request.referrer or url_for("home"))
+
+
 # ---------------- RUN APPLICATION ----------------
 
 if __name__ == "__main__":

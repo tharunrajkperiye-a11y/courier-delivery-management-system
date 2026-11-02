@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Dashboard | CourierFlow{% endblock %}
 {% block content %}
+<style>.delete-form{display:inline;margin:0}.btn-danger{background:#b42318!important;color:#fff!important;border:0;padding:7px 12px;border-radius:6px;cursor:pointer}</style>
+
 <h1>Admin Dashboard</h1>
 <p class="muted">Manage and review the records stored in the CourierFlow database.</p>
 <div class="stats">
@@ -20,27 +22,52 @@
 </div>
 
 <div class="panel"><h2>Customer Records</h2><div class="table-wrap"><table>
-<tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th></tr>
-{% for r in customers %}<tr><td>{{r.customer_id}}</td><td>{{r.name}}</td><td>{{r.phone}}</td><td>{{r.email}}</td><td>{{r.address}}</td></tr>{% else %}<tr><td colspan="5">No customer records yet.</td></tr>{% endfor %}
+<tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Action</th></tr>
+{% for r in customers %}
+<tr>
+<td>{{r.customer_id}}</td><td>{{r.name}}</td><td>{{r.phone}}</td><td>{{r.email}}</td><td>{{r.address}}</td>
+<td><form method="post" action="{{ url_for('delete_customer', record_id=r.customer_id) }}" onsubmit="return confirm('Delete this customer? Customers linked to parcels cannot be deleted.');"><button class="btn btn-danger" type="submit">Delete</button></form></td>
+</tr>
+{% else %}<tr><td colspan="6">No customer records yet.</td></tr>{% endfor %}
 </table></div></div>
 
 <div class="panel"><h2>Employee Records</h2><div class="table-wrap"><table>
-<tr><th>ID</th><th>Name</th><th>Phone</th><th>Designation</th></tr>
-{% for r in employees %}<tr><td>{{r.employee_id}}</td><td>{{r.name}}</td><td>{{r.phone}}</td><td>{{r.designation}}</td></tr>{% else %}<tr><td colspan="4">No employee records yet.</td></tr>{% endfor %}
+<tr><th>ID</th><th>Name</th><th>Phone</th><th>Designation</th><th>Action</th></tr>
+{% for r in employees %}
+<tr>
+<td>{{r.employee_id}}</td><td>{{r.name}}</td><td>{{r.phone}}</td><td>{{r.designation}}</td>
+<td><form method="post" action="{{ url_for('delete_employee', record_id=r.employee_id) }}" onsubmit="return confirm('Delete this employee? Employees linked to delivery logs cannot be deleted.');"><button class="btn btn-danger" type="submit">Delete</button></form></td>
+</tr>
+{% else %}<tr><td colspan="5">No employee records yet.</td></tr>{% endfor %}
 </table></div></div>
 
 <div class="panel"><h2>Parcel Records</h2><div class="table-wrap"><table>
-<tr><th>ID</th><th>Tracking No.</th><th>Sender</th><th>Receiver</th><th>Destination</th><th>Weight</th><th>Status</th></tr>
-{% for r in parcels %}<tr><td>{{r.parcel_id}}</td><td>{{r.tracking_number}}</td><td>{{r.sender_name}}</td><td>{{r.receiver_name}}</td><td>{{r.destination}}</td><td>{{r.weight}}</td><td>{{r.delivery_status}}</td></tr>{% else %}<tr><td colspan="7">No parcel records yet.</td></tr>{% endfor %}
+<tr><th>ID</th><th>Tracking No.</th><th>Sender</th><th>Receiver</th><th>Destination</th><th>Weight</th><th>Status</th><th>Action</th></tr>
+{% for r in parcels %}
+<tr>
+<td>{{r.parcel_id}}</td><td>{{r.tracking_number}}</td><td>{{r.sender_name}}</td><td>{{r.receiver_name}}</td><td>{{r.destination}}</td><td>{{r.weight}}</td><td>{{r.delivery_status}}</td>
+<td><form method="post" action="{{ url_for('delete_parcel', record_id=r.parcel_id) }}" onsubmit="return confirm('Delete this parcel and its related payment and delivery logs?');"><button class="btn btn-danger" type="submit">Delete</button></form></td>
+</tr>
+{% else %}<tr><td colspan="8">No parcel records yet.</td></tr>{% endfor %}
 </table></div></div>
 
 <div class="panel"><h2>Payment Records</h2><div class="table-wrap"><table>
-<tr><th>ID</th><th>Tracking No.</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th></tr>
-{% for r in payments %}<tr><td>{{r.payment_id}}</td><td>{{r.tracking_number}}</td><td>{{r.amount}}</td><td>{{r.payment_date}}</td><td>{{r.payment_method}}</td><td>{{r.payment_status}}</td></tr>{% else %}<tr><td colspan="6">No payment records yet.</td></tr>{% endfor %}
+<tr><th>ID</th><th>Tracking No.</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th><th>Action</th></tr>
+{% for r in payments %}
+<tr>
+<td>{{r.payment_id}}</td><td>{{r.tracking_number}}</td><td>{{r.amount}}</td><td>{{r.payment_date}}</td><td>{{r.payment_method}}</td><td>{{r.payment_status}}</td>
+<td><form method="post" action="{{ url_for('delete_payment', record_id=r.payment_id) }}" onsubmit="return confirm('Delete this payment record?');"><button class="btn btn-danger" type="submit">Delete</button></form></td>
+</tr>
+{% else %}<tr><td colspan="7">No payment records yet.</td></tr>{% endfor %}
 </table></div></div>
 
 <div class="panel"><h2>Delivery Log Records</h2><div class="table-wrap"><table>
-<tr><th>Log ID</th><th>Tracking No.</th><th>Employee</th><th>Status</th><th>Date</th><th>Location</th><th>Remarks</th></tr>
-{% for r in logs %}<tr><td>{{r.log_id}}</td><td>{{r.tracking_number}}</td><td>{{r.employee_name}}</td><td>{{r.status}}</td><td>{{r.status_date}}</td><td>{{r.location}}</td><td>{{r.remarks}}</td></tr>{% else %}<tr><td colspan="7">No delivery log records yet.</td></tr>{% endfor %}
+<tr><th>Log ID</th><th>Tracking No.</th><th>Employee</th><th>Status</th><th>Date</th><th>Location</th><th>Remarks</th><th>Action</th></tr>
+{% for r in logs %}
+<tr>
+<td>{{r.log_id}}</td><td>{{r.tracking_number}}</td><td>{{r.employee_name}}</td><td>{{r.status}}</td><td>{{r.status_date}}</td><td>{{r.location}}</td><td>{{r.remarks}}</td>
+<td><form method="post" action="{{ url_for('delete_log', record_id=r.log_id) }}" onsubmit="return confirm('Delete this delivery log?');"><button class="btn btn-danger" type="submit">Delete</button></form></td>
+</tr>
+{% else %}<tr><td colspan="8">No delivery log records yet.</td></tr>{% endfor %}
 </table></div></div>
 {% endblock %}

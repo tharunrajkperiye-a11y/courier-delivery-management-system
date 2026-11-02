@@ -1,78 +1,13 @@
 {% extends "base.html" %}
-
-{% block title %}Login - CourierFlow{% endblock %}
-
+{% block title %}Admin Login | CourierFlow{% endblock %}
 {% block content %}
-
-<div class="auth-wrap">
-
-    <div class="auth-card">
-
-        <div class="brand-icon" style="margin-bottom: 20px;">
-            CF
-        </div>
-
-        <h1>Welcome Back</h1>
-
-        <p class="muted">
-            Sign in to access your CourierFlow account.
-        </p>
-
-        <form method="POST">
-
-            <div class="form-group">
-
-                <label for="username">Username</label>
-
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
-                    autocomplete="username"
-                    required
-                    autofocus
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="password">Password</label>
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
-
-            <button
-                class="btn btn-primary"
-                type="submit"
-                style="width: 100%;"
-            >
-                Sign In
-            </button>
-
-        </form>
-
-        <div class="auth-links">
-
-            New customer?
-
-            <a href="{{ url_for('register_customer') }}">
-                Create a customer account
-            </a>
-
-        </div>
-
-    </div>
-
+<div class="panel" style="max-width:430px;margin:55px auto">
+  <h1>Admin Login</h1>
+  <p class="muted">Sign in to manage CourierFlow records.</p>
+  <form method="post" class="form">
+    <label>Username</label><input name="username" required>
+    <label>Password</label><input type="password" name="password" required>
+    <button class="btn" style="margin-top:18px;width:100%" type="submit">Login</button>
+  </form>
 </div>
-
 {% endblock %}

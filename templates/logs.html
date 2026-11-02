@@ -6,6 +6,7 @@ Delivery Logs - CourierFlow
 
 
 {% block content %}
+<style>.btn-danger{background:#b42318!important;color:#fff!important;border:0;padding:7px 12px;border-radius:6px;cursor:pointer}</style>
 
 <div class="page-header">
 
@@ -26,6 +27,7 @@ Delivery Logs - CourierFlow
 
             <tr>
 
+                <th>Log ID</th>
                 <th>Tracking No.</th>
 
                 <th>Employee</th>
@@ -37,6 +39,7 @@ Delivery Logs - CourierFlow
                 <th>Location</th>
 
                 <th>Remarks</th>
+                <th>Action</th>
 
             </tr>
 
@@ -48,6 +51,8 @@ Delivery Logs - CourierFlow
         {% for log in logs %}
 
             <tr>
+
+                <td>{{ log.log_id }}</td>
 
                 <td>
                     <strong>
@@ -101,13 +106,20 @@ Delivery Logs - CourierFlow
                     {{ log.remarks or "-" }}
                 </td>
 
+                <td>
+                    <form method="post" action="{{ url_for('delete_log', record_id=log.log_id) }}"
+                          onsubmit="return confirm('Delete this delivery log?');">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+
             </tr>
 
         {% else %}
 
             <tr>
 
-                <td colspan="6"
+                <td colspan="8"
                     style="text-align:center;padding:30px;">
 
                     No delivery history found.

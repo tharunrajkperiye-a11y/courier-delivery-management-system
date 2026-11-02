@@ -6,6 +6,7 @@ Parcels - CourierFlow
 
 
 {% block content %}
+<style>.btn-danger{background:#b42318!important;color:#fff!important;border:0;padding:7px 12px;border-radius:6px;cursor:pointer}</style>
 
 <div class="page-header">
 
@@ -39,6 +40,7 @@ Parcels - CourierFlow
                 <th>Booking Date</th>
 
                 <th>Status</th>
+                <th>Action</th>
 
             </tr>
 
@@ -107,13 +109,20 @@ Parcels - CourierFlow
 
                 </td>
 
+                <td>
+                    <form method="post" action="{{ url_for('delete_parcel', record_id=parcel.parcel_id) }}"
+                          onsubmit="return confirm('Delete this parcel and its related payment and delivery logs?');">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+
             </tr>
 
         {% else %}
 
             <tr>
 
-                <td colspan="7" style="text-align:center;padding:30px;">
+                <td colspan="8" style="text-align:center;padding:30px;">
 
                     No parcels found.
 
